@@ -55,12 +55,12 @@ export default function ChatPage() {
           />
         </div>
 
-        <section className="flex min-h-0 flex-col overflow-hidden rounded-3xl border border-white/70 bg-white/45 shadow-xl shadow-purple-950/10 backdrop-blur">
-          <header className="border-b border-white/70 bg-white/75 px-5 py-4">
+        <section className="flex min-h-0 flex-col overflow-hidden rounded-3xl border border-white/70 bg-white/48 shadow-xl shadow-purple-950/10 backdrop-blur">
+          <header className="hero-sheen border-b border-white/70 px-5 py-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-3">
-                <div className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-rose-500 to-purple-700 text-white">
-                  <Heart className="h-6 w-6" />
+                <div className="overflow-hidden rounded-2xl bg-gradient-to-br from-rose-500 to-purple-700 p-0.5 shadow-glow">
+                  <img src="/assets/heartbuddy-3d-companion.png" alt="HeartBuddy avatar" className="h-12 w-12 rounded-[0.9rem] object-cover" />
                 </div>
                 <div>
                   <h1 className="text-xl font-black text-purple-950">{companionName}</h1>

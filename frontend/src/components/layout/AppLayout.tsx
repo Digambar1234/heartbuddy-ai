@@ -10,7 +10,7 @@ export function AppLayout({ children, fullWidth = false }: { children: ReactNode
 
   return (
     <div className="premium-bg min-h-screen">
-      <header className="border-b border-white/70 bg-white/65 backdrop-blur">
+      <header className="sticky top-0 z-40 border-b border-white/70 bg-white/72 backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-4">
           <Link to="/dashboard" className="flex items-center gap-3 text-lg font-black text-purple-950">
             <span className="grid h-10 w-10 place-items-center rounded-2xl bg-rose-500 text-white">
@@ -18,38 +18,38 @@ export function AppLayout({ children, fullWidth = false }: { children: ReactNode
             </span>
             HeartBuddy AI
           </Link>
-          <nav className="flex flex-wrap items-center gap-2">
+          <nav className="flex flex-wrap items-center gap-1 rounded-2xl border border-white/70 bg-white/45 p-1 shadow-sm">
             <NavLink
               to="/dashboard"
-              className="inline-flex h-11 items-center gap-2 rounded-2xl px-4 text-sm font-semibold text-purple-900 hover:bg-white/80"
+              className={({ isActive }) => `inline-flex h-10 items-center gap-2 rounded-xl px-3 text-sm font-semibold transition ${isActive ? "bg-purple-700 text-white shadow-sm" : "text-purple-900 hover:bg-white/80"}`}
             >
               <Home className="h-4 w-4" />
               Dashboard
             </NavLink>
             <NavLink
               to="/chat"
-              className="inline-flex h-11 items-center gap-2 rounded-2xl px-4 text-sm font-semibold text-purple-900 hover:bg-white/80"
+              className={({ isActive }) => `inline-flex h-10 items-center gap-2 rounded-xl px-3 text-sm font-semibold transition ${isActive ? "bg-purple-700 text-white shadow-sm" : "text-purple-900 hover:bg-white/80"}`}
             >
               <MessageCircle className="h-4 w-4" />
               Chat
             </NavLink>
             <NavLink
               to="/memories"
-              className="inline-flex h-11 items-center gap-2 rounded-2xl px-4 text-sm font-semibold text-purple-900 hover:bg-white/80"
+              className={({ isActive }) => `inline-flex h-10 items-center gap-2 rounded-xl px-3 text-sm font-semibold transition ${isActive ? "bg-purple-700 text-white shadow-sm" : "text-purple-900 hover:bg-white/80"}`}
             >
               <Brain className="h-4 w-4" />
               Memories
             </NavLink>
             <NavLink
               to="/mood"
-              className="inline-flex h-11 items-center gap-2 rounded-2xl px-4 text-sm font-semibold text-purple-900 hover:bg-white/80"
+              className={({ isActive }) => `inline-flex h-10 items-center gap-2 rounded-xl px-3 text-sm font-semibold transition ${isActive ? "bg-purple-700 text-white shadow-sm" : "text-purple-900 hover:bg-white/80"}`}
             >
               <BarChart3 className="h-4 w-4" />
               Mood
             </NavLink>
             <NavLink
               to="/settings"
-              className="inline-flex h-11 items-center gap-2 rounded-2xl px-4 text-sm font-semibold text-purple-900 hover:bg-white/80"
+              className={({ isActive }) => `inline-flex h-10 items-center gap-2 rounded-xl px-3 text-sm font-semibold transition ${isActive ? "bg-purple-700 text-white shadow-sm" : "text-purple-900 hover:bg-white/80"}`}
             >
               <Settings className="h-4 w-4" />
               Settings

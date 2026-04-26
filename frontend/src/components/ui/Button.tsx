@@ -1,9 +1,9 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 
 const variants = {
-  primary: "bg-[#6d28d9] text-white shadow-glow hover:bg-[#5b21b6]",
-  secondary: "bg-white/80 text-[#4c1d95] ring-1 ring-purple-100 hover:bg-white",
-  ghost: "text-[#5b21b6] hover:bg-purple-50",
+  primary: "bg-gradient-to-r from-rose-500 via-purple-600 to-indigo-600 text-white shadow-glow hover:brightness-105",
+  secondary: "bg-white/86 text-[#4c1d95] ring-1 ring-purple-100 hover:bg-white shadow-sm",
+  ghost: "text-[#5b21b6] hover:bg-white/70",
   danger: "bg-rose-600 text-white hover:bg-rose-700",
 };
 

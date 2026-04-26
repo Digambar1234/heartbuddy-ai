@@ -51,10 +51,12 @@ export default function DashboardPage() {
         <p className="mt-3 max-w-2xl text-slate-700">Your companion, memories, moods, and conversations are all in one place.</p>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_0.9fr]">
-        <Card>
+      <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+        <Card className="overflow-hidden p-0">
+          <div className="grid gap-0 md:grid-cols-[1fr_220px]">
+          <div className="p-6">
           <div className="flex items-center gap-4">
-            <div className="grid h-14 w-14 place-items-center rounded-2xl bg-rose-500 text-white"><Heart className="h-7 w-7" /></div>
+            <div className="grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-rose-500 to-purple-700 text-white"><Heart className="h-7 w-7" /></div>
             <div>
               <p className="text-sm font-bold text-rose-600">Your companion</p>
               <h2 className="text-2xl font-black text-purple-950">{profile?.companion_name ?? "HeartBuddy"}</h2>
@@ -65,6 +67,11 @@ export default function DashboardPage() {
             <Info label="Tone" value={profile ? toneLabels[profile.companion_tone] : "Not set"} />
           </div>
           <Link to="/chat" className="mt-6 inline-flex"><Button icon={<MessageCircle className="h-4 w-4" />}>Talk to HeartBuddy</Button></Link>
+          </div>
+          <div className="hidden bg-gradient-to-br from-rose-100 to-indigo-100 p-3 md:block">
+            <img src="/assets/heartbuddy-3d-companion.png" alt="HeartBuddy companion visual" className="h-full min-h-64 w-full rounded-2xl object-cover" />
+          </div>
+          </div>
         </Card>
 
         <MoodCheckInCard onSubmit={(payload) => void quickMood(payload)} />
