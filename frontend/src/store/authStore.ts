@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { useChatStore } from "../features/chat/chatStore";
 import { authApi, settingsApi } from "../services/api";
 import type { Profile, User } from "../types";
 
@@ -20,8 +21,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   profile: null,
   isBootstrapping: true,
   setSession: (token, user) => {
+    useChatStore.getState().reset();
     localStorage.setItem("heartbuddy_token", token);
-    set({ token, user });
+    set({ token, user, profile: null });
   },
   setUser: (user) => set({ user }),
   setProfile: (profile) => set({ profile }),
@@ -40,11 +42,13 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       set({ user, profile, isBootstrapping: false });
     } catch {
       localStorage.removeItem("heartbuddy_token");
+      useChatStore.getState().reset();
       set({ token: null, user: null, profile: null, isBootstrapping: false });
     }
   },
   logout: () => {
     localStorage.removeItem("heartbuddy_token");
+    useChatStore.getState().reset();
     set({ token: null, user: null, profile: null });
   },
 }));

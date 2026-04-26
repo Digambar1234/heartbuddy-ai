@@ -41,7 +41,9 @@ def get_conversation(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ) -> Conversation:
-    return get_conversation_for_user(db, current_user, conversation_id)
+    conversation = get_conversation_for_user(db, current_user, conversation_id)
+    conversation.messages = [message for message in conversation.messages if message.user_id == current_user.id]
+    return conversation
 
 
 @router.post("/message", response_model=ChatResponse)

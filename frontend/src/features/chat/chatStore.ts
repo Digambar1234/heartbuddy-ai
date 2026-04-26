@@ -19,6 +19,7 @@ interface ChatState {
   selectConversation: (conversationId: string) => Promise<void>;
   sendMessage: (message: string) => Promise<void>;
   clearConversation: () => void;
+  reset: () => void;
 }
 
 export const useChatStore = create<ChatState>((set, get) => ({
@@ -36,7 +37,18 @@ export const useChatStore = create<ChatState>((set, get) => ({
     set({ isLoading: true, error: null });
     try {
       const conversations = await chatService.getConversations();
-      set({ conversations, isLoading: false });
+      const activeConversationId = get().activeConversationId;
+      const activeStillExists = conversations.some((conversation) => conversation.id === activeConversationId);
+      set({
+        conversations,
+        isLoading: false,
+        activeConversationId: activeStillExists ? activeConversationId : null,
+        messages: activeStillExists ? get().messages : [],
+        lastMemoriesUsed: activeStillExists ? get().lastMemoriesUsed : [],
+        lastNewMemories: activeStillExists ? get().lastNewMemories : [],
+        lastRiskLevel: activeStillExists ? get().lastRiskLevel : null,
+        lastUsedFallback: activeStillExists ? get().lastUsedFallback : false,
+      });
     } catch (err) {
       set({ error: getApiError(err), isLoading: false });
     }
@@ -123,4 +135,17 @@ export const useChatStore = create<ChatState>((set, get) => ({
     }
   },
   clearConversation: () => set({ activeConversationId: null, messages: [], lastMemoriesUsed: [], lastNewMemories: [] }),
+  reset: () =>
+    set({
+      conversations: [],
+      activeConversationId: null,
+      messages: [],
+      isLoading: false,
+      isSending: false,
+      error: null,
+      lastMemoriesUsed: [],
+      lastNewMemories: [],
+      lastRiskLevel: null,
+      lastUsedFallback: false,
+    }),
 }));
