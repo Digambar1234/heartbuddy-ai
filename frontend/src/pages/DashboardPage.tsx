@@ -5,6 +5,7 @@ import { AppLayout } from "../components/layout/AppLayout";
 import { Badge } from "../components/ui/Badge";
 import { Button } from "../components/ui/Button";
 import { Card } from "../components/ui/Card";
+import { ErrorMessage } from "../components/ui/ErrorMessage";
 import { chatService } from "../features/chat/chatService";
 import type { Conversation } from "../features/chat/chatTypes";
 import { MoodCheckInCard } from "../features/mood/components/MoodCheckInCard";
@@ -12,6 +13,7 @@ import { moodService } from "../features/mood/moodService";
 import type { MoodSummary, MoodValue } from "../features/mood/moodTypes";
 import { memoryService } from "../features/memories/memoryService";
 import type { Memory } from "../features/memories/memoryTypes";
+import { getApiError } from "../services/api";
 import { useAuthStore } from "../store/authStore";
 import { modeLabels, toneLabels } from "../utils/labels";
 
@@ -20,16 +22,25 @@ export default function DashboardPage() {
   const [memories, setMemories] = useState<Memory[]>([]);
   const [moodSummary, setMoodSummary] = useState<MoodSummary | null>(null);
   const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   async function load() {
-    const [memoryData, moodData, conversationData] = await Promise.all([
+    setIsLoading(true);
+    setError(null);
+    const [memoryResult, moodResult, conversationResult] = await Promise.allSettled([
       memoryService.list({ active_only: true }),
       moodService.summary(),
       chatService.getConversations(),
     ]);
-    setMemories(memoryData);
-    setMoodSummary(moodData);
-    setConversations(conversationData.slice(0, 3));
+
+    if (memoryResult.status === "fulfilled") setMemories(memoryResult.value);
+    if (moodResult.status === "fulfilled") setMoodSummary(moodResult.value);
+    if (conversationResult.status === "fulfilled") setConversations(conversationResult.value.slice(0, 3));
+
+    const firstFailure = [memoryResult, moodResult, conversationResult].find((result) => result.status === "rejected");
+    if (firstFailure?.status === "rejected") setError(getApiError(firstFailure.reason));
+    setIsLoading(false);
   }
 
   useEffect(() => {
@@ -37,8 +48,13 @@ export default function DashboardPage() {
   }, []);
 
   async function quickMood(payload: { mood: MoodValue; intensity: number; reason?: string }) {
-    await moodService.create(payload);
-    await load();
+    try {
+      setError(null);
+      await moodService.create(payload);
+      await load();
+    } catch (err) {
+      setError(getApiError(err));
+    }
   }
 
   const latestMemory = memories[0];
@@ -50,6 +66,12 @@ export default function DashboardPage() {
         <h1 className="mt-4 text-4xl font-black text-purple-950">Good to see you, {user?.name}.</h1>
         <p className="mt-3 max-w-2xl text-slate-700">Your companion, memories, moods, and conversations are all in one place.</p>
       </div>
+      <ErrorMessage message={error} />
+      {isLoading && (
+        <div className="mb-6 mt-4 rounded-2xl border border-white/70 bg-white/65 px-4 py-3 text-sm font-semibold text-purple-900 shadow-sm">
+          Refreshing your HeartBuddy dashboard...
+        </div>
+      )}
 
       <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
         <Card className="overflow-hidden p-0">
@@ -74,7 +96,7 @@ export default function DashboardPage() {
           </div>
         </Card>
 
-        <MoodCheckInCard onSubmit={(payload) => void quickMood(payload)} />
+        <MoodCheckInCard loading={isLoading} onSubmit={(payload) => void quickMood(payload)} />
       </div>
 
       <div className="mt-6 grid gap-5 md:grid-cols-3">

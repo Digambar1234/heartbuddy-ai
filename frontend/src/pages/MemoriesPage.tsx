@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AppLayout } from "../components/layout/AppLayout";
 import { Button } from "../components/ui/Button";
 import { Card } from "../components/ui/Card";
@@ -24,7 +24,7 @@ export default function MemoriesPage() {
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function load() {
+  const load = useCallback(async () => {
     setLoading(true);
     setError("");
     try {
@@ -34,12 +34,12 @@ export default function MemoriesPage() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [activeOnly, memoryType, search]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => void load(), 250);
     return () => window.clearTimeout(timer);
-  }, [search, memoryType, activeOnly]);
+  }, [load]);
 
   async function addMemory(payload: MemoryPayload) {
     try {
@@ -85,7 +85,7 @@ export default function MemoriesPage() {
     <AppLayout>
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-black text-purple-950">HeartBuddy’s Memory</h1>
+          <h1 className="text-4xl font-black text-purple-950">HeartBuddy's Memory</h1>
           <p className="mt-3 max-w-2xl text-slate-700">HeartBuddy uses these memories to support you personally. You are always in control.</p>
         </div>
         <ExportMemoriesButton />
