@@ -45,7 +45,7 @@ export default function ChatPage() {
 
   return (
     <AppLayout fullWidth>
-      <div className="grid h-[calc(100vh-8rem)] gap-4 lg:grid-cols-[19rem_1fr]">
+      <div className="grid h-[calc(100dvh-7rem)] gap-4 lg:h-[calc(100vh-8rem)] lg:grid-cols-[19rem_1fr]">
         <div className="hidden min-h-0 lg:block">
           <ConversationSidebar
             conversations={conversations}
@@ -55,16 +55,16 @@ export default function ChatPage() {
           />
         </div>
 
-        <section className="flex min-h-0 flex-col overflow-hidden rounded-3xl border border-white/70 bg-white/48 shadow-xl shadow-purple-950/10 backdrop-blur">
-          <header className="hero-sheen border-b border-white/70 px-5 py-4">
+        <section className="flex min-h-0 flex-col overflow-hidden rounded-2xl border border-white/70 bg-white/48 shadow-xl shadow-purple-950/10 backdrop-blur lg:rounded-3xl">
+          <header className="hero-sheen border-b border-white/70 px-4 py-3 lg:px-5 lg:py-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-3">
                 <div className="overflow-hidden rounded-2xl bg-gradient-to-br from-rose-500 to-purple-700 p-0.5 shadow-glow">
-                  <img src="/assets/heartbuddy-3d-companion.png" alt="HeartBuddy avatar" className="h-12 w-12 rounded-[0.9rem] object-cover" />
+                  <img src="/assets/heartbuddy-3d-companion.png" alt="HeartBuddy avatar" className="h-11 w-11 rounded-[0.9rem] object-cover lg:h-12 lg:w-12" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-black text-purple-950">{companionName}</h1>
-                  <p className="text-sm font-semibold text-slate-600">Here to support you</p>
+                  <h1 className="text-lg font-black text-purple-950 lg:text-xl">{companionName}</h1>
+                  <p className="text-xs font-semibold text-slate-600 lg:text-sm">Here to support you</p>
                 </div>
               </div>
               <div className="flex flex-wrap items-center gap-2">
@@ -85,10 +85,11 @@ export default function ChatPage() {
               activeConversationId={activeConversationId}
               onNew={() => void createConversation()}
               onSelect={(id) => void selectConversation(id)}
+              compact
             />
           </div>
 
-          <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 py-5 md:px-6">
+          <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-3 py-4 md:px-6">
             <ErrorMessage message={error} />
             <CrisisNotice show={lastRiskLevel === "crisis"} />
             {lastUsedFallback && (
@@ -97,13 +98,13 @@ export default function ChatPage() {
               </div>
             )}
             {messages.length === 0 && !isLoading && (
-              <div className="grid h-full place-items-center">
+              <div className="grid h-full min-h-72 place-items-center">
                 <div className="max-w-md text-center">
-                  <div className="mx-auto grid h-16 w-16 place-items-center rounded-3xl bg-rose-500 text-white shadow-glow">
-                    <Heart className="h-8 w-8" />
+                  <div className="mx-auto grid h-14 w-14 place-items-center rounded-3xl bg-rose-500 text-white shadow-glow lg:h-16 lg:w-16">
+                    <Heart className="h-7 w-7 lg:h-8 lg:w-8" />
                   </div>
-                  <h2 className="mt-5 text-3xl font-black text-purple-950">Start a conversation.</h2>
-                  <p className="mt-3 text-slate-600">HeartBuddy is ready to listen.</p>
+                  <h2 className="mt-4 text-2xl font-black text-purple-950 lg:mt-5 lg:text-3xl">Start a conversation.</h2>
+                  <p className="mt-2 text-sm text-slate-600 lg:mt-3 lg:text-base">HeartBuddy is ready to listen.</p>
                 </div>
               </div>
             )}
@@ -114,7 +115,7 @@ export default function ChatPage() {
             <div ref={endRef} />
           </div>
 
-          <footer className="space-y-3 border-t border-white/70 bg-white/65 p-4">
+          <footer className="space-y-2 border-t border-white/70 bg-white/75 p-3 lg:space-y-3 lg:p-4">
             <MemoryUsedBanner memories={lastMemoriesUsed} newMemories={lastNewMemories} />
             <QuickPrompts disabled={isSending} onPick={(prompt) => void sendMessage(prompt)} />
             <ChatInput disabled={isSending} onSend={(message) => void sendMessage(message)} />

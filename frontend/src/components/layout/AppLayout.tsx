@@ -53,7 +53,7 @@ export function AppLayout({ children, fullWidth = false }: { children: ReactNode
           </nav>
         </div>
       </header>
-      <main className={`mx-auto px-4 py-8 ${fullWidth ? "max-w-7xl" : "max-w-6xl"}`}>{children}</main>
+      <main className={`mx-auto px-4 ${fullWidth ? "max-w-7xl py-4 md:py-8" : "max-w-6xl py-8"}`}>{children}</main>
     </div>
   );
 }
